@@ -8,11 +8,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { ListMusic } from "lucide-react";
 
-interface PlaylistProps {
+interface QueueProps {
     side?: "right" | "top" | "bottom" | "left";
 }
 
-export default function Playlist ({side = "right"}: PlaylistProps) {
+export default function Queue ({side = "right"}: QueueProps) {
     return (
         <div>
             <Sheet>
@@ -23,12 +23,12 @@ export default function Playlist ({side = "right"}: PlaylistProps) {
                 </SheetTrigger>
                 <SheetContent side={side}>
                 <SheetHeader>
-                    <SheetTitle>Playlist</SheetTitle>
+                    <SheetTitle>Queue</SheetTitle>
                 </SheetHeader>
                 <div className="mt-4">
-                    {/* Playlist items would go here */}
+                    {/* Queue items would go here */}
                     <div className="text-muted-foreground text-sm">
-                    No items in playlist
+                    No items in Queue
                     </div>
                 </div>
                 </SheetContent>

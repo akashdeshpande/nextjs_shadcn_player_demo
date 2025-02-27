@@ -5,13 +5,6 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -30,7 +23,7 @@ import {
   VolumeX,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Playlist from "./Playlist";
+import Queue from "./Queue";
 
 interface Song {
   title: string;
@@ -244,7 +237,7 @@ export default function ResponsivePlayerUI({
                   onValueChange={(value) => onVolumeChange(value[0])}
                   className="w-full max-w-[120px]"
                 />
-                <Playlist side="bottom"/>
+                <Queue side="bottom"/>
               </div>
             </div>
           </div>
@@ -362,7 +355,7 @@ export default function ResponsivePlayerUI({
               className="w-[120px]"
             />
           </div>
-          <Playlist />
+          <Queue />
         </div>
       </div>
     </div>
