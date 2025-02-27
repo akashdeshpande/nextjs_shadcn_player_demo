@@ -1,23 +1,32 @@
+"use client"
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button"
 import MusicPlayer from "@/components/GPTcomponents/MusicPlayer";
+import LoadEpisodeList from "@/components/myAppComponents/load-episode-list";
+import { useState } from "react";
 
     // https://howlerjs.com/assets/howler.js/examples/player/audio/rave_digger.webm
     // https://howlerjs.com/assets/howler.js/examples/player/audio/80s_vibe.webm
 
+
+
 export default function Home() {
+  const [mediaUrl, setMediaUrl] = useState("");
+
+  const handleMediaChange = (mediaUrl) => {
+    setMediaUrl(mediaUrl);
+  }
+
   return (
     <div>
-      <Button>Test Btn</Button>
-      {/* <MusicPlayer
-        song={{
-          title: "Never Gonna Give You Up",
-          artist: "Rick Astley",
-          albumArt: "/placeholder.svg?height=400&width=400",
-          duration: 213,
-        }}
-      ></MusicPlayer> */}
-      <MusicPlayer></MusicPlayer>
+      <LoadEpisodeList 
+        handleMediaChange={handleMediaChange}
+      />
+      <MusicPlayer
+        mediaUrl={mediaUrl}
+        setMediaUrl={handleMediaChange}
+      ></MusicPlayer>
     </div>
   );
 }

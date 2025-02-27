@@ -4,10 +4,12 @@
 import React, { useState, useEffect } from "react";
 import { Howl } from "howler";
 import ResponsivePlayerUI from "./ResponsivePlayer";
+import { usePlaylist, PlaylistProvider } from "@/components/GPThooks/playlist-context";
+import { Song } from "@/types/types";
 
-const MusicPlayer = () => {
+const MusicPlayer = ({ mediaUrl, setMediaUrl }) => {
   // Business logic state from your unstyled component
-  const [mediaUrl, setMediaUrl] = useState("");
+  // const [mediaUrl, setMediaUrl] = useState("");
   const [sound, setSound] = useState<Howl | null>(null);
   const [volume, setVolume] = useState(1.0); // range: 0–1
   const [speed, setSpeed] = useState(1.0);
@@ -15,6 +17,15 @@ const MusicPlayer = () => {
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [renderInterval, setRenderInterval] = useState<any>(null);
+  const [song, setSong] = useState<Song>({
+    id: "1",
+    title: "Never Gonna Give You Up",
+    artist: "Rick Astley",
+    albumArt: "/placeholder.svg?height=400&width=400",
+    duration: 213,
+  });
+  
+
 
   // Update the progress and duration while sound is playing.
   useEffect(() => {
@@ -32,6 +43,15 @@ const MusicPlayer = () => {
       }
     }, 100);
     setRenderInterval(interval);
+
+    // setSong({
+    //   id: "1",
+    //   title: "Never Gonna Give You Up",
+    //   artist: "Rick Astley",
+    //   albumArt: "/placeholder.svg?height=400&width=400",
+    //   duration: 213,
+    // });
+
     return () => clearInterval(interval);
   }, [sound]);
 
@@ -130,6 +150,10 @@ const MusicPlayer = () => {
     }
   };
 
+  const handleSongChnage = (song: Song) => {
+    setSong(song);
+  }
+
   // Format time (same as your original helper)
   const formatTime = (timeInSec: number) => {
     let hours = Math.floor(timeInSec / 3600);
@@ -147,50 +171,62 @@ const MusicPlayer = () => {
   };
 
   // Dummy song data for the UI (you could update this based on loaded metadata)
-  const song = {
-    title: "Sample Song",
-    artist: "Unknown Artist",
-    albumArt: "/placeholder.svg",
-    duration: duration || 0,
-  };
+  // const song = {
+  //   title: "Sample Song",
+  //   artist: "Unknown Artist",
+  //   albumArt: "/placeholder.svg",
+  //   duration: duration || 0,
+  // };
 
   return (
-    <div>
-      {/* Media URL input – part of the business logic */}
-      <div className="p-4">
-        <p>Input URL for sound:</p>
-        <input
-          type="text"
-          id="mediaUrl"
-          onChange={(e) => setMediaUrl(e.target.value)}
-          value={mediaUrl}
-          className="border p-1"
+    <PlaylistProvider>
+      <div>
+        {/* Media URL input – part of the business logic */}
+        <div className="p-4">
+          <p>Input URL for sound:</p>
+          <input
+            type="text"
+            id="mediaUrl"
+            onChange={(e) => setMediaUrl(e.target.value)}
+            value={mediaUrl}
+            className="border p-1"
+          />
+          <button
+            onClick={handleLoadSong}
+            className="ml-2 px-2 py-1 border rounded"
+          >
+            Load
+          </button>
+        </div>
+        {/* Pass all state and callbacks to the responsive UI */}
+        <ResponsivePlayerUI
+          song={song}
+          isPlaying={isPlaying}
+          volume={volume * 100} // convert volume to percentage (0–100)
+          progress={elapsedTime}
+          onPlay={playSound}
+          onPause={pauseSound}
+          onStop={stopSound}
+          onSeek={handleSeekChange}
+          onSeekForward={seekForward}
+          onSeekBackward={seekBackward}
+          onVolumeChange={handleVolumeChange}
+          onSpeedChange={handleSpeedChange}
+          onSongChange={handleSongChnage}
+          formatTime={formatTime}
         />
-        <button
-          onClick={handleLoadSong}
-          className="ml-2 px-2 py-1 border rounded"
-        >
-          Load
-        </button>
       </div>
-      {/* Pass all state and callbacks to the responsive UI */}
-      <ResponsivePlayerUI
-        song={song}
-        isPlaying={isPlaying}
-        volume={volume * 100} // convert volume to percentage (0–100)
-        progress={elapsedTime}
-        onPlay={playSound}
-        onPause={pauseSound}
-        onStop={stopSound}
-        onSeek={handleSeekChange}
-        onSeekForward={seekForward}
-        onSeekBackward={seekBackward}
-        onVolumeChange={handleVolumeChange}
-        onSpeedChange={handleSpeedChange}
-        formatTime={formatTime}
-      />
-    </div>
+    </PlaylistProvider>
   );
 };
 
 export default MusicPlayer;
+
+// chnage and merge handleSongChange with handleLoadSong later
+// desktop playlist and mobile playlist merge with common playlist view / component
+// play song from playlist
+// splice playlist after selected song
+
+// so far
+// add song to playlist
+// chnage song details in responsive player
