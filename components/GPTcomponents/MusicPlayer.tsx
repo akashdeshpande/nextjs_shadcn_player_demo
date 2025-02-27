@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { Howl } from "howler";
 import ResponsivePlayerUI from "./ResponsivePlayer";
+import Queue from "./Queue";
 
 const MusicPlayer = () => {
   // Business logic state from your unstyled component
@@ -15,6 +16,10 @@ const MusicPlayer = () => {
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [renderInterval, setRenderInterval] = useState<any>(null);
+  const [queueOpen, setQueueOpen] = useState(false); // Queue state
+
+  const handleOpenSheet = () => setQueueOpen(true);
+  const handleCloseSheet = () => setQueueOpen(false);
 
   // Update the progress and duration while sound is playing.
   useEffect(() => {
@@ -188,7 +193,10 @@ const MusicPlayer = () => {
         onVolumeChange={handleVolumeChange}
         onSpeedChange={handleSpeedChange}
         formatTime={formatTime}
+        queueOpen={queueOpen}
+        setQueueOpen={handleOpenSheet}
       />
+      <Queue open={queueOpen} onClose={handleCloseSheet} />
     </div>
   );
 };

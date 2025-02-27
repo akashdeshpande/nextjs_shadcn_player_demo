@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Sheet,
     SheetContent,
@@ -10,16 +12,22 @@ import { ListMusic } from "lucide-react";
 
 interface QueueProps {
     side?: "right" | "top" | "bottom" | "left";
+    open?: boolean; // Controlled open state
+    onClose?: () => void;
 }
 
-export default function Queue ({side = "right"}: QueueProps) {
+export default function Queue ({
+    side = "right",
+    open = false,
+    onClose,
+}: QueueProps) {
     return (
         <div>
-            <Sheet>
+            <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose?.()}>
                 <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                {/* <Button variant="ghost" size="icon">
                     <ListMusic className="h-5 w-5" />
-                </Button>
+                </Button> */}
                 </SheetTrigger>
                 <SheetContent side={side}>
                 <SheetHeader>

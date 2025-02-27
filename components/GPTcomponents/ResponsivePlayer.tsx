@@ -46,6 +46,8 @@ interface ResponsivePlayerUIProps {
   onVolumeChange: (newVolume: number) => void;
   onSpeedChange: (newSpeed: number) => void;
   formatTime: (seconds: number) => string;
+  queueOpen: boolean; // Added for queue control
+  setQueueOpen: (open: boolean) => void; // Added for queue control
 }
 
 export default function ResponsivePlayerUI({
@@ -62,6 +64,8 @@ export default function ResponsivePlayerUI({
   onVolumeChange,
   onSpeedChange,
   formatTime,
+  queueOpen,
+  setQueueOpen,
 }: ResponsivePlayerUIProps) {
   const [isExpanded, setIsExpanded] = React.useState(false);
   const isMuted = volume === 0;
@@ -237,7 +241,14 @@ export default function ResponsivePlayerUI({
                   onValueChange={(value) => onVolumeChange(value[0])}
                   className="w-full max-w-[120px]"
                 />
-                <Queue side="bottom"/>
+                {/* Queue Button in Expanded Player */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setQueueOpen(true)}
+                >
+                  <ListMusic className="h-5 w-5" />
+                </Button>
               </div>
             </div>
           </div>
@@ -354,8 +365,15 @@ export default function ResponsivePlayerUI({
               onValueChange={(value) => onVolumeChange(value[0])}
               className="w-[120px]"
             />
+            {/* Queue Button in Desktop */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setQueueOpen(true)}
+            >
+              <ListMusic className="h-5 w-5" />
+            </Button>
           </div>
-          <Queue />
         </div>
       </div>
     </div>
