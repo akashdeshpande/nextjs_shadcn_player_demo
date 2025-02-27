@@ -30,6 +30,7 @@ import {
   VolumeX,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Playlist from "./Playlist";
 
 interface Song {
   title: string;
@@ -243,6 +244,7 @@ export default function ResponsivePlayerUI({
                   onValueChange={(value) => onVolumeChange(value[0])}
                   className="w-full max-w-[120px]"
                 />
+                <Playlist side="bottom"/>
               </div>
             </div>
           </div>
@@ -360,24 +362,7 @@ export default function ResponsivePlayerUI({
               className="w-[120px]"
             />
           </div>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <ListMusic className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Playlist</SheetTitle>
-              </SheetHeader>
-              <div className="mt-4">
-                {/* Playlist items would go here */}
-                <div className="text-muted-foreground text-sm">
-                  No items in playlist
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
+          <Playlist />
         </div>
       </div>
     </div>
