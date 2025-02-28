@@ -23,7 +23,7 @@ import {
   VolumeX,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Queue from "./Queue";
+type QueueOpenSide = "right" | "top" | "bottom" | "left";
 
 interface Song {
   title: string;
@@ -46,8 +46,7 @@ interface ResponsivePlayerUIProps {
   onVolumeChange: (newVolume: number) => void;
   onSpeedChange: (newSpeed: number) => void;
   formatTime: (seconds: number) => string;
-  queueOpen: boolean; // Added for queue control
-  setQueueOpen: (open: boolean) => void; // Added for queue control
+  setQueueOpen: (side: QueueOpenSide) => void; // Added for queue control
 }
 
 export default function ResponsivePlayerUI({
@@ -57,14 +56,13 @@ export default function ResponsivePlayerUI({
   progress,
   onPlay,
   onPause,
-  onStop,
+  // onStop,
   onSeek,
   onSeekForward,
   onSeekBackward,
   onVolumeChange,
   onSpeedChange,
   formatTime,
-  queueOpen,
   setQueueOpen,
 }: ResponsivePlayerUIProps) {
   const [isExpanded, setIsExpanded] = React.useState(false);
@@ -245,7 +243,7 @@ export default function ResponsivePlayerUI({
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => setQueueOpen(true)}
+                  onClick={() => setQueueOpen("bottom")}
                 >
                   <ListMusic className="h-5 w-5" />
                 </Button>
@@ -369,7 +367,7 @@ export default function ResponsivePlayerUI({
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setQueueOpen(true)}
+              onClick={() => setQueueOpen("right")}
             >
               <ListMusic className="h-5 w-5" />
             </Button>

@@ -7,11 +7,10 @@ import {
     SheetTitle,
     SheetTrigger,
   } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { ListMusic } from "lucide-react";
+type QueueOpenSide = "right" | "top" | "bottom" | "left";
 
 interface QueueProps {
-    side?: "right" | "top" | "bottom" | "left";
+    side?: QueueOpenSide;
     open?: boolean; // Controlled open state
     onClose?: () => void;
 }
