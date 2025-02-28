@@ -112,10 +112,7 @@ export default function ResponsivePlayerUI({
             variant="ghost"
             size="icon"
             className="h-10 w-10"
-            onClick={(e) => {
-              e.stopPropagation();
-              isPlaying ? onPause() : onPlay();
-            }}
+            onClick={() => (isPlaying ? onPause() : onPlay())}
           >
             {isPlaying ? (
               <Pause className="h-5 w-5" />
@@ -181,9 +178,7 @@ export default function ResponsivePlayerUI({
                 variant="default"
                 size="icon"
                 className="h-16 w-16 rounded-full"
-                onClick={() => {
-                  isPlaying ? onPause() : onPlay();
-                }}
+                onClick={() => (isPlaying ? onPause() : onPlay())}
               >
                 {isPlaying ? (
                   <Pause className="h-8 w-8" />
@@ -289,9 +284,7 @@ export default function ResponsivePlayerUI({
               variant="default"
               size="icon"
               className="h-10 w-10 rounded-full"
-              onClick={() => {
-                isPlaying ? onPause() : onPlay();
-              }}
+              onClick={() => (isPlaying ? onPause() : onPlay())}
             >
               {isPlaying ? (
                 <Pause className="h-5 w-5" />
