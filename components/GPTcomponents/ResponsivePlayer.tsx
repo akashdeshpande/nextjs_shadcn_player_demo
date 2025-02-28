@@ -23,17 +23,11 @@ import {
   VolumeX,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Song } from "@/components/GPTcomponents/types/types";
 type QueueOpenSide = "right" | "top" | "bottom" | "left";
 
-interface Song {
-  title: string;
-  artist: string;
-  albumArt: string;
-  duration: number;
-}
-
 interface ResponsivePlayerUIProps {
-  song: Song;
+  song: Song | undefined;
   isPlaying: boolean;
   volume: number; // 0 to 100
   progress: number;

@@ -6,8 +6,15 @@ import { Howl } from "howler";
 import ResponsivePlayerUI from "./ResponsivePlayer";
 import Queue from "./Queue";
 type QueueOpenSide = "right" | "top" | "bottom" | "left";
+import { Song } from "@/components/GPTcomponents/types/types";
 
-const MusicPlayer = () => {
+interface MusicPlayerProps {
+  songs: Song[];
+  song: Song | undefined;
+  setSong: (song: Song | undefined) => void;
+}
+
+const MusicPlayer = ({songs, song, setSong}: MusicPlayerProps) => {
   // Business logic state from your unstyled component
   const [mediaUrl, setMediaUrl] = useState("");
   const [sound, setSound] = useState<Howl | null>(null);
@@ -32,6 +39,10 @@ const MusicPlayer = () => {
     if (renderInterval) {
       clearInterval(renderInterval);
     }
+    if(song && mediaUrl !== song?.link) {
+      setMediaUrl(song.link); // await here
+      handleLoadSong();
+    }
     const interval = setInterval(() => {
       if (sound && sound.playing()) {
         const currentTime = sound.seek() as number;
@@ -44,7 +55,7 @@ const MusicPlayer = () => {
     }, 100);
     setRenderInterval(interval);
     return () => clearInterval(interval);
-  }, [sound]);
+  }, [sound, song]);
 
   // Create a new Howl instance
   const createSound = () => {
@@ -158,12 +169,14 @@ const MusicPlayer = () => {
   };
 
   // Dummy song data for the UI (you could update this based on loaded metadata)
-  const song = {
-    title: "Sample Song",
-    artist: "Unknown Artist",
-    albumArt: "/placeholder.svg",
-    duration: duration || 0,
-  };
+  // const song = {
+  //   id: 1,
+  //   title: "Sample Song",
+  //   artist: "Unknown Artist",
+  //   albumArt: "/placeholder.svg",
+  //   duration: duration || 0,
+  //   link: "http://www.sample.com/song.mp3",
+  // };
 
   return (
     <div>
@@ -201,7 +214,13 @@ const MusicPlayer = () => {
         formatTime={formatTime}
         setQueueOpen={handleOpenSheet}
       />
-      <Queue open={queueOpen} onClose={handleCloseSheet} side={queueOpenSide}/>
+      <Queue 
+        open={queueOpen}
+        onClose={handleCloseSheet}
+        side={queueOpenSide}
+        songs={songs}
+        setSong={setSong}
+      />
     </div>
   );
 };
