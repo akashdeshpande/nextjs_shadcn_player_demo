@@ -7,14 +7,15 @@ import ResponsivePlayerUI from "./ResponsivePlayer";
 import Queue from "./Queue";
 type QueueOpenSide = "right" | "top" | "bottom" | "left";
 import { Song } from "@/components/GPTcomponents/types/types";
+import { useMusicPlayer } from "@/components/GPTcomponents/MusicPlayerContext";
 
 interface MusicPlayerProps {
   songs: Song[];
-  song: Song | undefined;
-  setSong: (song: Song | undefined) => void;
+  // song: Song | undefined;
+  // setSong: (song: Song | undefined) => void;
 }
 
-const MusicPlayer = ({songs, song, setSong}: MusicPlayerProps) => {
+const MusicPlayer = ({songs}: MusicPlayerProps) => {
   // Business logic state from your unstyled component
   const [mediaUrl, setMediaUrl] = useState("");
   const [sound, setSound] = useState<Howl | null>(null);
@@ -26,6 +27,7 @@ const MusicPlayer = ({songs, song, setSong}: MusicPlayerProps) => {
   const [renderInterval, setRenderInterval] = useState<any>(null);
   const [queueOpen, setQueueOpen] = useState(false); // Queue state
   const [queueOpenSide, setQueueOpenSide] = useState<QueueOpenSide>("right");
+  const { song, setSong } = useMusicPlayer();
 
 
   const handleOpenSheet = (openSide: QueueOpenSide) => {
@@ -39,10 +41,6 @@ const MusicPlayer = ({songs, song, setSong}: MusicPlayerProps) => {
     if (renderInterval) {
       clearInterval(renderInterval);
     }
-    if(song && mediaUrl !== song?.link) {
-      setMediaUrl(song.link); // await here
-      handleLoadSong();
-    }
     const interval = setInterval(() => {
       if (sound && sound.playing()) {
         const currentTime = sound.seek() as number;
@@ -55,7 +53,14 @@ const MusicPlayer = ({songs, song, setSong}: MusicPlayerProps) => {
     }, 100);
     setRenderInterval(interval);
     return () => clearInterval(interval);
-  }, [sound, song]);
+  }, [sound]);
+
+  useEffect(() => {
+    if(song && mediaUrl !== song?.link) {
+      setMediaUrl(song.link); // await here
+      handleLoadSong();
+    } 
+  }, [song]);
 
   // Create a new Howl instance
   const createSound = () => {
@@ -167,16 +172,6 @@ const MusicPlayer = ({songs, song, setSong}: MusicPlayerProps) => {
       seconds < 10 ? "0" : ""
     }${seconds}`;
   };
-
-  // Dummy song data for the UI (you could update this based on loaded metadata)
-  // const song = {
-  //   id: 1,
-  //   title: "Sample Song",
-  //   artist: "Unknown Artist",
-  //   albumArt: "/placeholder.svg",
-  //   duration: duration || 0,
-  //   link: "http://www.sample.com/song.mp3",
-  // };
 
   return (
     <div>
